@@ -1,4 +1,5 @@
 const container = document.querySelector('#container');
+const updateGridBtn = document.querySelector('#update-grid-btn');
 
 function generateRandomRGBColor() {
   const red = Math.floor(Math.random() * 255);
@@ -8,17 +9,18 @@ function generateRandomRGBColor() {
   return `rgb(${red}, ${green}, ${blue})`;
 }
 
-function createLayout() {
-  // will get this later from user input
+function createLayout(userInput) {
   const containerWidth = container.offsetWidth;
 
-  const squaresPerRow = 16;
+  const squaresPerRow = userInput || 16;
   const totalSquares = squaresPerRow ** 2;
+
+  container.innerHTML = '';
 
   for (let i = 0; i < totalSquares; i++) {
     const div = document.createElement('div');
 
-    div.setAttribute('class', 'grid-item');
+    div.classList.add('grid-item');
     // div.style.backgroundColor = generateRandomRGBColor();
     div.style.width = `${containerWidth / squaresPerRow}px`;
     div.style.height = `${containerWidth / squaresPerRow}px`;
@@ -30,5 +32,17 @@ function createLayout() {
     container.appendChild(div);
   }
 }
+
+updateGridBtn.addEventListener('click', () => {
+  const userInput = Number(
+    prompt('Enter new number of squares in range: 10-100')
+  );
+
+  if (isNaN(userInput)) {
+    alert('Please enter number in range from 10 to 100');
+    return;
+  }
+  createLayout(userInput);
+});
 
 createLayout();
