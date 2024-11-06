@@ -23,6 +23,10 @@ function createLayout() {
     div.style.width = `${containerWidth / squaresPerRow}px`;
     div.style.height = `${containerWidth / squaresPerRow}px`;
 
+    div.addEventListener('mouseenter', () => {
+      div.style.backgroundColor = '#000000';
+    });
+
     container.appendChild(div);
   }
 }
