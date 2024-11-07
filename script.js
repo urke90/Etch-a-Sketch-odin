@@ -1,15 +1,18 @@
 const container = document.querySelector('#container');
+const optionsContainer = document.querySelector('#options-container');
 
-const updateGridBtn = document.querySelector('#update-grid-btn');
-const colorizeGridBtn = document.querySelector('#colorize-grid-btn');
+const BUTTON_VALUES = {
+  COLORIZE_GRID: 'colorize-grid',
+  NORMAL_COLOR: 'normal-color',
+  UPDATE_GRID: 'update-grid',
+};
 
 const state = {
-  currentColor: '#000000',
+  startingColor: '#000000',
   isRandomColor: false,
 };
 
 function createLayout(userInput) {
-  console.log('createLayout');
   const containerWidth = container.offsetWidth;
 
   const squaresPerRow = userInput || 16;
@@ -26,7 +29,7 @@ function createLayout(userInput) {
     div.style.height = `${containerWidth / squaresPerRow}px`;
 
     div.addEventListener('mouseenter', () => {
-      let gridItemColor = state.currentColor;
+      let gridItemColor = state.startingColor;
 
       if (state.isRandomColor) {
         gridItemColor = generateRandomRGBColor();
@@ -39,21 +42,38 @@ function createLayout(userInput) {
   }
 }
 
-updateGridBtn.addEventListener('click', () => {
-  const userInput = Number(
-    prompt('Enter new number of squares in range: 10-100')
-  );
+optionsContainer.addEventListener('click', (e) => {
+  const value = e.target.dataset.value;
 
-  if (isNaN(userInput)) {
-    alert('Please enter number in range from 10 to 100');
-    return;
+  switch (value) {
+    case BUTTON_VALUES.COLORIZE_GRID:
+      {
+        state.isRandomColor = true;
+      }
+      break;
+    case BUTTON_VALUES.NORMAL_COLOR:
+      {
+        state.isRandomColor = false;
+      }
+      break;
+    case BUTTON_VALUES.UPDATE_GRID:
+      {
+        const userInput = Number(
+          prompt('Enter new number of squares in range: 10-100')
+        );
+
+        if (isNaN(userInput)) {
+          alert('Please enter number in range from 10 to 100');
+          return;
+        }
+
+        createLayout(userInput);
+      }
+      break;
+
+    default:
+      break;
   }
-
-  createLayout(userInput);
-});
-
-colorizeGridBtn.addEventListener('click', () => {
-  state.isRandomColor = true;
 });
 
 function generateRandomRGBColor() {
