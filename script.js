@@ -1,15 +1,15 @@
 const container = document.querySelector('#container');
+
 const updateGridBtn = document.querySelector('#update-grid-btn');
+const colorizeGridBtn = document.querySelector('#colorize-grid-btn');
 
-function generateRandomRGBColor() {
-  const red = Math.floor(Math.random() * 255);
-  const green = Math.floor(Math.random() * 255);
-  const blue = Math.floor(Math.random() * 255);
-
-  return `rgb(${red}, ${green}, ${blue})`;
-}
+const state = {
+  currentColor: '#000000',
+  isRandomColor: false,
+};
 
 function createLayout(userInput) {
+  console.log('createLayout');
   const containerWidth = container.offsetWidth;
 
   const squaresPerRow = userInput || 16;
@@ -26,7 +26,13 @@ function createLayout(userInput) {
     div.style.height = `${containerWidth / squaresPerRow}px`;
 
     div.addEventListener('mouseenter', () => {
-      div.style.backgroundColor = '#000000';
+      let gridItemColor = state.currentColor;
+
+      if (state.isRandomColor) {
+        gridItemColor = generateRandomRGBColor();
+      }
+
+      div.style.backgroundColor = gridItemColor;
     });
 
     container.appendChild(div);
@@ -42,7 +48,20 @@ updateGridBtn.addEventListener('click', () => {
     alert('Please enter number in range from 10 to 100');
     return;
   }
+
   createLayout(userInput);
 });
+
+colorizeGridBtn.addEventListener('click', () => {
+  state.isRandomColor = true;
+});
+
+function generateRandomRGBColor() {
+  const red = Math.floor(Math.random() * 255);
+  const green = Math.floor(Math.random() * 255);
+  const blue = Math.floor(Math.random() * 255);
+
+  return `rgb(${red}, ${green}, ${blue})`;
+}
 
 createLayout();
