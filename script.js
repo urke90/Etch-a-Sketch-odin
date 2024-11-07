@@ -10,7 +10,7 @@ const BUTTON_VALUES = {
 
 const state = {
   numOfSquares: 16,
-  startingColor: '#000000',
+  startingColor: 'rgba(1, 1, 1, 0.1)',
   isRandomColor: false,
 };
 
@@ -23,15 +23,17 @@ function createLayout(userInput) {
   container.innerHTML = '';
 
   for (let i = 0; i < totalSquares; i++) {
+    let enterEventCount = 0;
     const div = document.createElement('div');
 
-    div.classList.add('grid-item');
-    // div.style.backgroundColor = generateRandomRGBColor();
     div.style.width = `${containerWidth / squaresPerRow}px`;
     div.style.height = `${containerWidth / squaresPerRow}px`;
+    div.classList.add('grid-item');
 
     div.addEventListener('mouseenter', () => {
+      enterEventCount++;
       let gridItemColor = state.startingColor;
+      gridItemColor = setHoverColor(enterEventCount);
 
       if (state.isRandomColor) {
         gridItemColor = generateRandomRGBColor();
@@ -84,13 +86,20 @@ optionsContainer.addEventListener('click', (e) => {
     }
   }
 });
+function generateRGBSingleColor() {
+  return Math.floor(Math.random() * 255);
+}
 
 function generateRandomRGBColor() {
-  const red = Math.floor(Math.random() * 255);
-  const green = Math.floor(Math.random() * 255);
-  const blue = Math.floor(Math.random() * 255);
+  const red = generateRGBSingleColor();
+  const green = generateRGBSingleColor();
+  const blue = generateRGBSingleColor();
 
   return `rgb(${red}, ${green}, ${blue})`;
+}
+
+function setHoverColor(count) {
+  return count >= 10 ? `rgba(1, 1, 1, 1)` : `rgba(1, 1, 1, 0.${count})`;
 }
 
 createLayout();

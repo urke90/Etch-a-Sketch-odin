@@ -15,6 +15,7 @@ button {
   text-transform: uppercase;
   background-color: cornflowerblue;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .header {
