@@ -5,9 +5,11 @@ const BUTTON_VALUES = {
   COLORIZE_GRID: 'colorize-grid',
   NORMAL_COLOR: 'normal-color',
   UPDATE_GRID: 'update-grid',
+  RESET_GRID: 'reset-grid',
 };
 
 const state = {
+  numOfSquares: 16,
   startingColor: '#000000',
   isRandomColor: false,
 };
@@ -67,12 +69,19 @@ optionsContainer.addEventListener('click', (e) => {
           return;
         }
 
-        createLayout(userInput);
+        state.numOfSquares = userInput;
+
+        createLayout(state.numOfSquares);
       }
       break;
-
-    default:
+    case BUTTON_VALUES.RESET_GRID:
+      {
+        createLayout(state.numOfSquares);
+      }
       break;
+    default: {
+      throw new Error('Invalid button value');
+    }
   }
 });
 
