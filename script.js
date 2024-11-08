@@ -12,12 +12,13 @@ const state = {
   numOfSquares: 16,
   startingColor: 'rgba(1, 1, 1, 0.1)',
   isRandomColor: false,
+  isDrawing: false,
 };
 
 function createLayout(userInput) {
   const containerWidth = container.offsetWidth;
 
-  const squaresPerRow = userInput || 16;
+  const squaresPerRow = userInput || 32;
   const totalSquares = squaresPerRow ** 2;
 
   container.innerHTML = '';
@@ -28,9 +29,10 @@ function createLayout(userInput) {
 
     div.style.width = `${containerWidth / squaresPerRow}px`;
     div.style.height = `${containerWidth / squaresPerRow}px`;
-    div.classList.add('grid-item');
+    div.style.border = '1px solid #f5f0f0';
 
-    div.addEventListener('mouseenter', () => {
+    function drawOnCanvas() {
+      if (!state.isDrawing) return;
       enterEventCount++;
       let gridItemColor = state.startingColor;
       gridItemColor = setHoverColor(enterEventCount);
@@ -40,12 +42,25 @@ function createLayout(userInput) {
       }
 
       div.style.backgroundColor = gridItemColor;
+    }
+
+    div.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      state.isDrawing = true;
+      drawOnCanvas();
+    });
+
+    div.addEventListener('mouseenter', drawOnCanvas);
+
+    div.addEventListener('mouseup', () => {
+      state.isDrawing = false;
     });
 
     container.appendChild(div);
   }
 }
 
+// Add single event listener on container element which wrapps buttons to reduce memory usage
 optionsContainer.addEventListener('click', (e) => {
   const value = e.target.dataset.value;
 
@@ -86,6 +101,7 @@ optionsContainer.addEventListener('click', (e) => {
     }
   }
 });
+
 function generateRGBSingleColor() {
   return Math.floor(Math.random() * 255);
 }

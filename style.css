@@ -34,10 +34,8 @@ button {
   width: 700px;
   height: 700px;
   display: flex;
-  /* border: 1px solid red; */
   flex-wrap: wrap;
   margin: auto;
-  /* flex-direction: column; */
 }
 
 .grid-item {
